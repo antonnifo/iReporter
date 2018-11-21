@@ -1,0 +1,91 @@
+body{
+    font: 15px/1.5 arial,helvetica,sans-serif;
+    padding: o;
+    margin: 0;
+    background-color: #f4f4f4;
+   
+   }
+   
+   .container{
+       width: 80%;
+       margin: auto;
+       overflow: hidden;
+   }
+   
+   ul{
+       margin: 0;
+       padding: 0;
+     }
+   
+   header{
+       /* background-color: #35424a; */
+       background-color: #353637;
+       color: white;
+       padding-top: 30px;
+       min-height: 70px;
+       border-bottom: #32a0c2 3px solid;
+   }
+   
+   header a{
+       color: white;
+       text-decoration: none;
+       text-transform: uppercase;
+       font-size: 16px;
+   }
+   
+   header li{
+       float: left;
+       display: inline;
+       padding: 0 20px 0 20px;
+     }
+     
+     header #branding{
+       float: left;
+     }
+     
+     header #branding h1{
+       margin: 0;
+     }
+   
+   header nav{
+       float: right;
+     margin-top: 10px;
+   
+   }
+   
+   header .highlight, header .active a{
+       color: #32a0c2;
+       font-weight: bold;
+     }
+     
+   header a:hover{
+       color: #cccccc;
+       font-weight: bold;
+     }
+   /* log in form */
+   .form{
+       background:#f1f1f1; width:470px; margin:0 auto; padding-left:50px; padding-top:20px;
+       }
+   
+   .form p.contact { font-size: 12px; margin:0px 0px 10px 0;line-height: 14px; font-family:Arial, Helvetica;}
+   
+   .form input[type="text"] { width: 400px; }
+       
+   .form input[type="email"] { width: 400px; }
+       
+   .form input[type="password"] { width: 400px; }
+   
+   .form label { color: #000; font-weight:bold;font-size: 12px;font-family:Arial, Helvetica; }
+   
+   .form input.buttom{ background: #32a0c2; display: inline-block; padding: 5px 10px 6px; color: #fbf7f7; text-decoration: none; font-weight: bold; line-height: 1; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; -moz-box-shadow: 0 1px 3px #999; -webkit-box-shadow: 0 1px 3px #999; box-shadow: 0 1px 3px #999; text-shadow: 0 -1px 1px #222; border: none; position: relative; cursor: pointer; font-size: 14px; font-family:Verdana, Geneva, sans-serif;}
+   .form input.buttom:hover{ background-color: #2a78f6; }       
+   .form input, textarea { background-color: rgba(255, 255, 255, 0.4); border: 1px solid rgba(122, 192, 0, 0.15); padding: 7px; font-family: Keffeesatz, Arial; color: #4b4b4b; font-size: 14px; -webkit-border-radius: 5px; margin-bottom: 15px; margin-top: -10px; }
+   .form input:focus, textarea:focus { border: 1px solid #ff5400; background-color: rgba(255, 255, 255, 1); }
+   
+     footer{
+       padding: 20px;
+       margin-top: 20px;
+       color: #ffffff;
+       background-color: #32a0c2;
+       text-align: center;
+     }
