@@ -150,35 +150,6 @@ body{
      overflow: hidden;
    }
  
-   .cards {
-    /* width: 40%;
-     border:3px solid black;
-     
-     margin: 16px;*/
-     float: left;
- 
-     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-     transition: 0.3s;
-     width: 40%;
-   }
-   .cards h4 a{
-     text-decoration: none;
-     
-     margin: auto;
-   }
-   .cards h4 {
-     text-align: center;
- }
- 
- .cards:hover {
-     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
- 
- }
- 
- .cadi {
-   width: 40%;
-   float: left;
- }
  
  #t01 {
    width: 100%;
@@ -287,5 +258,48 @@ body{
  
    width:70%;
    height:500px; 
-   float: left;"
+   float: left;
  }
+
+ #container3{
+  width: 80%;
+  margin: auto;
+  overflow: hidden;
+}
+.heading h2 {
+
+  color: #32a0c2;
+  font-weight: 400;
+  /* font-size: 1.4rem; */
+  margin-bottom: 10px;
+}
+.heading p {
+  margin-bottom: 10px;
+
+}
+.card{
+  width: 30%;
+  padding: 0 15px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+     transition: 0.3s;
+     width: 40%;
+}
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+
+.user-name{
+  font-size: 1rem;
+  display: block;
+  /* margin: 10px 0 ; */
+  text-align: center;
+
+}
+.user-title{
+  font-size: 0,8rem;
+  display: block;
+  /* margin: 10px 0 ; */
+  text-align: center;
+
+}
