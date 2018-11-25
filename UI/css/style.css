@@ -298,6 +298,10 @@ body{
   text-align: center;
 
 }
+.user-title a {
+  text-decoration: none;
+  color:#32a0c2;
+}
 .user-title{
   font-size: 0,8rem;
   display: block;
@@ -305,3 +309,11 @@ body{
   text-align: center;
 
 }
+.user-title1 {
+  font-size:1rem;
+  color:#32a0c2;
+  text-align: center;
+  display: block;
+
+}
+ 
