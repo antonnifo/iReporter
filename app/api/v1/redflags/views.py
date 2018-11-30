@@ -39,4 +39,17 @@ class RedFlags(Resource):
         return make_response(jsonify({
             "status" : 200,
             "data" : self.db.get_all()
-        }), 200)         
+        }), 200) 
+
+class RedFlag(Resource):
+    """docstring of RedFlag"""
+    def __init__(self):
+        self.db = RedFlagModel()
+        
+
+    def get(self, redflag_id):
+        incident = self.db.find(redflag_id)
+        return make_response(jsonify({
+                    "status" : 200,
+                    "data" : incident
+                }), 200)                
