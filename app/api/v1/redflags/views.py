@@ -32,4 +32,11 @@ class RedFlags(Resource):
         return make_response(jsonify({
             "status" : 201,
             "data" : success_message
-        }), 201)    
+        }), 201)
+
+    def get(self):
+        self.db.get_all()      
+        return make_response(jsonify({
+            "status" : 200,
+            "data" : self.db.get_all()
+        }), 200)         
