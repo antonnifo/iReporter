@@ -64,4 +64,23 @@ class RedFlag(Resource):
         return make_response(jsonify({
                 "status" : 204,
                 "data" : success_message
-                }))                             
+                }))  
+
+    def put(self, redflag_id):
+        incident = self.db.find(redflag_id)
+        if incident:
+                incident['createdBy'] = request.json.get('createdBy', incident['createdBy'])
+                incident['location'] = request.json.get('location', incident['location'])
+                incident['images'] = request.json.get('images', incident['images'])
+                incident['videos'] = request.json.get('videos', incident['videos'])
+                incident['title'] = request.json.get('title', incident['title'])
+                incident['comment'] = request.json.get('comment', incident['comment'])
+
+                success_message = {
+                    "message" : "Red-flag has been updated"
+                }
+
+                return make_response(jsonify({
+                    "status" : 201,
+                    "data" : success_message
+                }), 201)                                       
