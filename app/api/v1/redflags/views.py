@@ -90,7 +90,7 @@ class UpdateLocation(Resource):
     def __init__(self):
         self.db = RedFlagModel()
 
-        
+
     def patch(self, redflag_id):
         incident = self.db.find(redflag_id)
         if incident:
@@ -102,4 +102,21 @@ class UpdateLocation(Resource):
             return make_response(jsonify({
                 "status" : 201,
                 "data" : success_message
-            }), 201)                                                   
+            }), 201)  
+
+class UpdateComment(Resource):
+    def __init__(self):
+        self.db = RedFlagModel()
+    def patch(self, redflag_id):
+        incident = self.db.find(redflag_id)
+        if incident:
+                incident['comment'] = request.json.get('comment', incident['comment'])
+
+                success_message = {
+                    "message" : "Updated red-flag record's comment"
+                }
+
+                return make_response(jsonify({
+                    "status" : 201,
+                    "data" : success_message
+                }), 201)                                                             
