@@ -52,4 +52,16 @@ class RedFlag(Resource):
         return make_response(jsonify({
                     "status" : 200,
                     "data" : incident
-                }), 200)                
+                }), 200)
+    
+    
+    def delete(self, redflag_id):
+        incident = self.db.find(redflag_id)
+        self.db.delete(incident)
+        success_message = {
+                'message' : 'red-flag record has been deleted'
+                 }
+        return make_response(jsonify({
+                "status" : 204,
+                "data" : success_message
+                }))                             
