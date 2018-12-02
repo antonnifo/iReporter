@@ -28,10 +28,10 @@ iReporter enables any/every citizen to bring any form of corruption to the notic
  > git clone https://github.com/antonnifo/iReporter.git
 
 ### Setup environment
-#### create a virtual environment and activate it asap
 
-> python3 - m venv env
-> source .env
+#### create a virtual environment and activate it asap
+> python3 - m venv env  
+> source .env  
 > ```.env
 
 #### Install all the dependencies using the command
@@ -42,15 +42,15 @@ iReporter enables any/every citizen to bring any form of corruption to the notic
 > flask run
 
 #### Test the application
-> flask test 
-> or 
+> flask test  
+> or  
 > flask cov
 
-## Endpoints to test
 
-| Method | Endpoint                                    | Description                                    |                                 
-| ------ | ------------------------------------------- | ---------------------------------------------- |
-                                   
+
+## Endpoints to test  
+
+| Method | Endpoint                                    | Description                                    |                      | ------ | ------------------------------------------- | ---------------------------------------------- |
 | POST   | /api/v1/red-flags                           | Create a red-flag record.                      |                     
 | GET    | /api/v1/red-flags                           | Fetch all red-flag records.                    |
 | GET    | /api/v1/red-flags/<red-flag-id>             | Fetch a specific red-flag record.              |
