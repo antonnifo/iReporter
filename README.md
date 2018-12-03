@@ -1,4 +1,4 @@
-## IReporter [![Build Status](https://travis-ci.org/antonnifo/iReporter.svg?branch=patch-comment-162297565)](https://travis-ci.org/antonnifo/iReporter) [![codecov](https://codecov.io/gh/antonnifo/iReporter/branch/patch-comment-162297565/graph/badge.svg)](https://codecov.io/gh/antonnifo/iReporter) ![license](https://img.shields.io/github/license/mashape/apistatus.svg) [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/bl4ck4ndbr0wn/iReporter)
+## IReporter [![Build Status](https://travis-ci.org/antonnifo/iReporter.svg?branch=patch-comment-162297565)](https://travis-ci.org/antonnifo/iReporter) [![codecov](https://codecov.io/gh/antonnifo/iReporter/branch/patch-comment-162297565/graph/badge.svg)](https://codecov.io/gh/antonnifo/iReporter)[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/antonnifo/iReporter)
 
 
 ### PROJECT OVERVIEW
@@ -50,14 +50,26 @@ iReporter enables any/every citizen to bring any form of corruption to the notic
 
 ## Endpoints to test  
 
-| Method | Endpoint                                    | Description                                    |                      | ------ | ------------------------------------------- | ---------------------------------------------- |
-| POST   | /api/v1/red-flags                           | Create a red-flag record.                      |                     
-| GET    | /api/v1/red-flags                           | Fetch all red-flag records.                    |
-| GET    | /api/v1/red-flags/<red-flag-id>             | Fetch a specific red-flag record.              |
-| PATCH  | /api/v1/red-flags/<red-flag-id>/location    | Edit the location of a specific record.        |
-| PATCH  | /api/v1/red-flags/<red-flag-id>/comment     | Edit the comment of a specific record.         |
-| DELETE | /api/v1/red-flags/<red-flag-id>             | Delete a specific red flag record.             |
-| PUT    | /api/v1/red-flags/<red-flag-id>             | Edit the whole red-flag record at once.        |
+| Method | Endpoint                                    | Description                                    |  
+| ------ | ------------------------------------------- | ---------------------------------------------- |  
+| POST   | /api/v1/red-flags                           | Create a red-flag record.                      |  
+| GET    | /api/v1/red-flags                           | Fetch all red-flag records.                    |  
+| GET    | /api/v1/red-flags/<red-flag-id>             | Fetch a specific red-flag record.              |  
+| PATCH  | /api/v1/red-flags/<red-flag-id>/location    | Edit the location of a specific record.        |  
+| PATCH  | /api/v1/red-flags/<red-flag-id>/comment     | Edit the comment of a specific record.         |  
+| DELETE | /api/v1/red-flags/<red-flag-id>             | Delete a specific red flag record.             |  
+| PUT    | /api/v1/red-flags/<red-flag-id>             | Edit the whole red-flag record at once.        |  
+ 
+ #### Author  
+ > Anthony Mwangi
+ 
+                    
 
-#### Author
-> Anthony Mwangi
+
+
+
+
+
+
+
+
