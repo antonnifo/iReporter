@@ -1,4 +1,4 @@
-## IReporter [![Build Status](https://travis-ci.org/antonnifo/iReporter.svg?branch=patch-comment-162297565)](https://travis-ci.org/antonnifo/iReporter) [![codecov](https://codecov.io/gh/antonnifo/iReporter/branch/patch-comment-162297565/graph/badge.svg)](https://codecov.io/gh/antonnifo/iReporter)[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/antonnifo/iReporter)
+## IReporter [![Build Status](https://travis-ci.org/antonnifo/iReporter.svg?branch=patch-comment-162297565)](https://travis-ci.org/antonnifo/iReporter) [![codecov](https://codecov.io/gh/antonnifo/iReporter/branch/patch-comment-162297565/graph/badge.svg)](https://codecov.io/gh/antonnifo/iReporter) [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/antonnifo/iReporter)
 
 
 ### PROJECT OVERVIEW
