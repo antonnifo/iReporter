@@ -1,17 +1,19 @@
-from flask_restful import Resource
-from flask import jsonify, make_response, request
-from .models import RedFlagModel
 import datetime
+
+from flask import jsonify, make_response, request
+from flask_restful import Resource
+
+from .models import RedFlagModel
 
 
 class RedFlags(Resource):
-    """docstring for RedFlags"""
-    
+    """docstring for RedFlags class"""
     def __init__(self):
+        """initiliase the redflag class"""    
         self.db = RedFlagModel()
 
     def post(self):
-        
+        """docstring for saving a redflag"""            
         data = {
             'createdOn' : datetime.datetime.utcnow(),
             'createdBy' : request.json.get('createdBy', ""),
@@ -24,17 +26,16 @@ class RedFlags(Resource):
             'comment' : request.json.get('comment', "")
         }
         self.db.save(data)
-        
         success_message = {
             'message' : 'Created red-flag record'
         }
-
         return make_response(jsonify({
             "status" : 201,
             "data" : success_message
         }), 201)
 
     def get(self):
+        """docstring for getting all the redflags posted"""    
         self.db.get_all()      
         return make_response(jsonify({
             "status" : 200,
@@ -42,20 +43,21 @@ class RedFlags(Resource):
         }), 200) 
 
 class RedFlag(Resource):
-    """docstring of RedFlag"""
+    """docstring of a single RedFlag"""
     def __init__(self):
+        """initiliase the Redflag class"""    
         self.db = RedFlagModel()
         
-
     def get(self, redflag_id):
+        """docstring for getting a specific red-flag"""    
         incident = self.db.find(redflag_id)
         return make_response(jsonify({
                     "status" : 200,
                     "data" : incident
                 }), 200)
-    
-    
+      
     def delete(self, redflag_id):
+        """docstring for deleting a red-flag"""    
         incident = self.db.find(redflag_id)
         self.db.delete(incident)
         success_message = {
@@ -67,6 +69,7 @@ class RedFlag(Resource):
                 }))  
 
     def put(self, redflag_id):
+        """docstring for updating any of the records posted"""    
         incident = self.db.find(redflag_id)
         if incident:
                 incident['createdBy'] = request.json.get('createdBy', incident['createdBy'])
@@ -87,35 +90,37 @@ class RedFlag(Resource):
 
 
 class UpdateLocation(Resource):
+    """docstring of editing Location"""
     def __init__(self):
+        """initiliase the updatelocation class"""    
         self.db = RedFlagModel()
 
-
     def patch(self, redflag_id):
+        """docstring of editing a specific Location"""    
         incident = self.db.find(redflag_id)
         if incident:
             incident['location'] = request.json.get('location', incident['location'])
             success_message = {
                         "message" : "Updated red-flag record's location"
                     }
-
             return make_response(jsonify({
                 "status" : 201,
                 "data" : success_message
             }), 201)  
 
 class UpdateComment(Resource):
+    """docstring of editing comment"""
     def __init__(self):
+        """initiliase the updatecomment class"""     
         self.db = RedFlagModel()
     def patch(self, redflag_id):
+        """docstring of editing comment"""    
         incident = self.db.find(redflag_id)
         if incident:
                 incident['comment'] = request.json.get('comment', incident['comment'])
-
                 success_message = {
                     "message" : "Updated red-flag record's comment"
                 }
-
                 return make_response(jsonify({
                     "status" : 201,
                     "data" : success_message

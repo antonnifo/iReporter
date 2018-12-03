@@ -1,5 +1,6 @@
-import unittest
 import json
+import unittest
+
 from ... import create_app
 
 
@@ -26,7 +27,6 @@ class RedFlagTestCase(unittest.TestCase):
 
     def test_get_all_redflags(self):
         response = self.app.get("/api/v1/red-flags")
-        # result = json.loads(response.data)
         self.assertEqual(response.status_code, 200)
         
 
@@ -42,13 +42,7 @@ class RedFlagTestCase(unittest.TestCase):
          data = json.dumps(self.redflag))
         response = self.app.get("/api/v1/red-flags/1")
         json.loads(response.data)
-        self.assertEqual(response.status_code, 200)
-
-    # def test_redflag_not_found(self):
-    #     response = self.app.get("/api/v1/red-flags/10")
-    #     result = json.loads(response.data)
-    #     self.assertEqual(response.status_code, 404) 
-    #     self.assertIn("Red-flag does not exist",str(result))       
+        self.assertEqual(response.status_code, 200)      
 
     def test_delete_specific_redflag(self):
         self.app.post("/api/v1/red-flags", headers={'Content-Type': 'application/json'},

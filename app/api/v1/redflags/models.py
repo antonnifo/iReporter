@@ -13,7 +13,6 @@ class RedFlagModel():
 
     def save(self, data):
         data['id'] = self.id
-
         self.db.append(data)
     
     def find(self, redflag_id):
