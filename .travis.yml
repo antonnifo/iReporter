@@ -7,4 +7,5 @@ script:
   - pytest --cov-report term-missing --cov=./app
 after_success:
   - coveralls
+  - codecov --token=3eb6f3bc-16a6-442a-84e1-acb108cbbb2c
 cache: pip
