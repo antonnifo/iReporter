@@ -1,4 +1,4 @@
-## IReporter [![Build Status](https://travis-ci.org/antonnifo/iReporter.svg?branch=patch-comment-162297565)](https://travis-ci.org/antonnifo/iReporter)
+## IReporter [![Build Status](https://travis-ci.org/antonnifo/iReporter.svg?branch=patch-comment-162297565)](https://travis-ci.org/antonnifo/iReporter) [![codecov](https://codecov.io/gh/antonnifo/iReporter/branch/patch-comment-162297565/graph/badge.svg)](https://codecov.io/gh/antonnifo/iReporter)
 
 
 ### PROJECT OVERVIEW
