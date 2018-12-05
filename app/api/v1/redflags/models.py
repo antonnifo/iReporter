@@ -1,5 +1,50 @@
+"""model for views"""
+import datetime
+
 from flask import jsonify, make_response, request
+from flask_restful import Resource, reqparse
+
+
+parser = reqparse.RequestParser(bundle_errors=True)
+parser.add_argument('location',
+                    type=str,
+                    required=True,
+                    help="This field cannot be left blank!"
+                    )
+parser.add_argument('type',
+                    type=str,
+                    required=True,
+                    choices=("red-flag", "intervention"),
+                    help="This field cannot be left "
+                         "blank or Bad choice: {error_msg}"
+                    )
+parser.add_argument('status',
+                    type=str,
+                    required=True,
+                    help="This field cannot be left blank!"
+                    )
+parser.add_argument('images',
+                    action='append',
+                    help="This field can be left blank!"
+                    )
+parser.add_argument('videos',
+                    action='append',
+                    help="This field can be left blank!"
+                    )
+
+parser.add_argument('comment',
+                    type=str,
+                    required=True,
+                    help="This field cannot be left blank!"
+                    )
+parser.add_argument('title',
+                    type=str,
+                    required=True,
+                    help="This field cannot be left blank!"
+                    )
+
 incidents = []
+
 
 class RedFlagModel():
 
@@ -8,27 +53,65 @@ class RedFlagModel():
         if len(incidents) == 0:
             self.id = 1
         else:
-            self.id = incidents[-1]['id'] + 1  
+            self.id = incidents[-1]['id'] + 1
         self.id = len(incidents) + 1
 
-    def save(self, data):
-        data['id'] = self.id
+    def save(self):
+        parser.parse_args()
+        data = {
+            'id': self.id,
+            'createdOn': datetime.datetime.utcnow(),
+            'createdBy': request.json.get('createdBy'),
+            'type': 'red-flags',
+            'location': request.json.get('location'),
+            'status': "draft",
+            'images': request.json.get('images'),
+            'videos': request.json.get('videos'),
+            'title': request.json.get('title'),
+            'comment': request.json.get('comment')
+        }
+        
         self.db.append(data)
-    
+        return self.id
+
     def find(self, redflag_id):
         for incident in self.db:
             if incident['id'] == redflag_id:
                 return incident
 
-        return None
+        return "red flag does not exit"
 
     def delete(self, incident):
         self.db.remove(incident)
-
+        return "deleted"
 
     def get_all(self):
         return self.db
 
+    def edit_redflag_location(self, incident):
+        "Method to edit a redflag's location"
+        incident['location'] = request.json.get('location', 'keyerror')
+        if incident['location'] == 'keyerror':
+            return "keyerror"
+        return "updated"
 
-    
-          
+    def edit_redflag_comment(self, incident):
+        "Method to edit a redflag's comment"
+        incident['comment'] = request.json.get('comment', 'keyerror')
+        if incident['comment'] == 'keyerror':
+            return "keyerror"
+        return "updated"
+
+    def edit_redflag(self, incident):
+        """Method to edit redflag fields"""
+        incident['createdBy'] = request.json.get(
+            'createdBy', incident['createdBy'])
+        incident['location'] = request.json.get(
+            'location', incident['location'])
+        incident['status'] = request.json.get('status', incident['status'])
+        incident['images'] = request.json.get('images', incident['images'])
+        incident['videos'] = request.json.get('videos', incident['videos'])
+        incident['title'] = request.json.get('title', incident['title'])
+        incident['comment'] = request.json.get('comment', incident['comment'])
+
+        return "updated"
