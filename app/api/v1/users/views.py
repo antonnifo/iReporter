@@ -16,7 +16,7 @@ class Users(Resource):
         return make_response(jsonify({
             "status": 200,
             "data": self.db.get_users()
-        }), 200)    
+        }), 200)
 
     def post(self):
         """method to post a user"""
@@ -49,3 +49,23 @@ class Users(Resource):
             "status": 201,
             "data": success_message
         }), 201)
+
+
+class User(Resource):
+    """docstring of User"""
+
+    def __init__(self):
+        self.db = UserModel()
+
+    def get(self, user_id):
+        """method to get a specific user"""
+        user = self.db.get_user(user_id)
+        if user == "no user":
+            return make_response(jsonify({
+                "status": 404,
+                "error": "user does not exist"
+            }), 404)
+        return make_response(jsonify({
+            "status": 200,
+            "data": user
+        }), 200)
