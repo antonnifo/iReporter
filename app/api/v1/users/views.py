@@ -119,3 +119,36 @@ class UpdateUserStatus(Resource):
                 "status": 200,
                 "data": success_message
             }), 200)
+
+            
+class UpdateUserPassword(Resource):
+    """docstring of UpdateUserPassword"""
+
+    def __init__(self):
+        self.db = UserModel()
+
+    def patch(self, user_id):
+        """method to update user password"""
+
+        edit_status = self.db.edit_user_password(user_id)
+
+        if edit_status == "no user":
+            return make_response(jsonify({
+                "status": 404,
+                "error": "User does not exist"
+            }), 404)
+
+        elif edit_status == "keyerror":
+            return make_response(jsonify({
+                "status": 500,
+                "error": "KeyError user's password not updated"
+            }), 500)
+        elif edit_status == "updated":
+            success_message = {
+                "id": user_id,
+                "message": "Updated user's password"
+            }
+            return make_response(jsonify({
+                "status": 200,
+                "data": success_message
+            }), 200)
