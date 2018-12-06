@@ -3,13 +3,20 @@ import datetime
 
 from flask import jsonify, make_response, request
 from flask_restful import Resource, reqparse
-
+from .validators import validator_integer, validate_coordinates, validate_string
 
 parser = reqparse.RequestParser(bundle_errors=True)
-parser.add_argument('location',
-                    type=str,
+
+parser.add_argument('createdBy',
+                    type=validator_integer,
                     required=True,
-                    help="This field cannot be left blank!"
+                    help="Value Must be an Interger as it is an ID or cant be left blank"
+                    )
+
+parser.add_argument('location',
+                    type=validate_coordinates,
+                    required=True,
+                    help="This field cannot be left blank or improperly formated"
                     )
 parser.add_argument('type',
                     type=str,
@@ -21,7 +28,8 @@ parser.add_argument('type',
 parser.add_argument('status',
                     type=str,
                     required=True,
-                    help="This field cannot be left blank!"
+                    choices=("resolved", "under investigation", "rejected"),
+                    help="This field cannot be left blank or should only be resolved ,under investigation or rejected"
                     )
 parser.add_argument('images',
                     action='append',
@@ -33,14 +41,14 @@ parser.add_argument('videos',
                     )
 
 parser.add_argument('comment',
-                    type=str,
+                    type=validate_string,
                     required=True,
-                    help="This field cannot be left blank!"
+                    help="This field cannot be left blank or should be properly formated"
                     )
 parser.add_argument('title',
-                    type=str,
+                    type=validate_string,
                     required=True,
-                    help="This field cannot be left blank!"
+                    help="This field cannot be left blank or should be properly formated"
                     )
 
 incidents = []
