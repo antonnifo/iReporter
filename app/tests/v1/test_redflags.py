@@ -13,16 +13,17 @@ class RedFlagTestCase(unittest.TestCase):
     def setUp(self):
         APP = create_app("testing")
         self.app = APP.test_client()
+
         self.redflag = {
-            "createdOn": "Fri, 2 March 2018 12:08:13 GMT",
-            "createdBy": "Antonnifo",
-            'type': 'red-flag',
-            "location": "Kahawa",
-            "status": "Under investigation",
+            "createdBy": 5,
+            "type": "red-flag",
+            "location": "66, 12",
+            "status": "resolved",
             "images": "",
             "videos": "",
             "title": "NYS scandal",
-            "comment": "Hello Andela."
+            "comment": "53"
+
         }
 
     def test_get_all_redflags(self):
@@ -31,9 +32,8 @@ class RedFlagTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_post_redflag(self):
-        """method to test posting of a redflag"""
-        response = self.app.post(
-            "/api/v1/red-flags", headers={'Content-Type': 'application/json'}, data=json.dumps(self.redflag))
+        response = self.app.post("/api/v1/red-flags", headers={'Content-Type': 'application/json'},
+                                 data=json.dumps(self.redflag))
         result = json.loads(response.data)
         self.assertEqual(response.status_code, 201)
         self.assertIn('Created red-flag record', str(result))
@@ -60,9 +60,9 @@ class RedFlagTestCase(unittest.TestCase):
         self.app.post("/api/v1/red-flags/1/location",
                       headers={'Content-Type': 'application/json'}, data=json.dumps(self.redflag))
         response = self.app.patch("/api/v1/red-flags/1/location", headers={
-                                  'Content-Type': 'application/json'}, data=json.dumps({"location": "Kayole"}))
+                                  'Content-Type': 'application/json'}, data=json.dumps({"location": "24.0 , 12.0"}))
         result = json.loads(response.data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
         self.assertIn("Updated red-flag record's location", str(result))
 
     def test_update_comment_of_specific_redflag(self):
