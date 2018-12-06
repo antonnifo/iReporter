@@ -10,6 +10,14 @@ class Users(Resource):
     def __init__(self):
         self.db = UserModel()
 
+    def get(self):
+        """method to get all users"""
+
+        return make_response(jsonify({
+            "status": 200,
+            "data": self.db.get_users()
+        }), 200)    
+
     def post(self):
         """method to post a user"""
         user_id = self.db.save_user()
