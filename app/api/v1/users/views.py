@@ -88,6 +88,25 @@ class User(Resource):
                 "data": success_message
             }))
 
+    def put(self, user_id):
+        """method to update a user"""
+        edit_status = self.db.edit_user(user_id)
+
+        if edit_status == "no user":
+            return make_response(jsonify({
+                "status": 404,
+                "error": "user does not exist"
+            }), 404)
+        elif edit_status == "updated":
+            success_message = {
+                "id": user_id,
+                "message": "user record has been updated"
+            }
+            return make_response(jsonify({
+                "status": 200,
+                "data": success_message
+            }))    
+
 class UpdateUserStatus(Resource):
     """docstring of UpdateUserStatus"""
 
@@ -120,7 +139,7 @@ class UpdateUserStatus(Resource):
                 "data": success_message
             }), 200)
 
-            
+
 class UpdateUserPassword(Resource):
     """docstring of UpdateUserPassword"""
 
