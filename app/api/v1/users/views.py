@@ -69,3 +69,21 @@ class User(Resource):
             "status": 200,
             "data": user
         }), 200)
+        
+    def delete(self, user_id):
+        """method to delete user"""
+        delete_status = self.db.delete_user(user_id)
+        if delete_status == "no user":
+            return make_response(jsonify({
+                "status": 404,
+                "error": "user does not exist"
+            }), 404)
+        elif delete_status == "deleted":
+            success_message = {
+                "id": user_id,
+                "message": "user record has been deleted"
+            }
+            return make_response(jsonify({
+                "status": 200,
+                "data": success_message
+            }))
