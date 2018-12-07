@@ -105,7 +105,8 @@ class User(Resource):
             return make_response(jsonify({
                 "status": 200,
                 "data": success_message
-            }))    
+            }))
+
 
 class UpdateUserStatus(Resource):
     """docstring of UpdateUserStatus"""

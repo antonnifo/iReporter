@@ -62,7 +62,7 @@ class RedFlagTestCase(unittest.TestCase):
         response = self.app.patch("/api/v1/red-flags/1/location", headers={
                                   'Content-Type': 'application/json'}, data=json.dumps({"location": "24.0 , 12.0"}))
         result = json.loads(response.data)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
         self.assertIn("Updated red-flag record's location", str(result))
 
     def test_update_comment_of_specific_redflag(self):

@@ -112,6 +112,7 @@ class RedFlagModel():
 
     def edit_redflag(self, incident):
         """Method to edit redflag fields"""
+        parser.parse_args()
         incident['createdBy'] = request.json.get(
             'createdBy', incident['createdBy'])
         incident['location'] = request.json.get(
