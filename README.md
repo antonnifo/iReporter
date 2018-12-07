@@ -38,13 +38,16 @@ iReporter enables any/every citizen to bring any form of corruption to the notic
 
 | Method | Endpoint                                    | Description                                    |  
 | ------ | ------------------------------------------- | ---------------------------------------------- |  
-| POST   | /api/v1/red-flags                           | Create a red-flag record.                      |  
-| GET    | /api/v1/red-flags                           | Fetch all red-flag records.                    |  
-| GET    | /api/v1/red-flags/1                         | Fetch a specific red-flag record.              |  
-| PATCH  | /api/v1/red-flags/1/location                | Edit the location of a specific record.        |  
-| PATCH  | /api/v1/red-flags/1/comment                 | Edit the comment of a specific record.         |  
-| DELETE | /api/v1/red-flags/1                         | Delete a specific red flag record.             |  
-| PUT    | /api/v1/red-flags/1                         | Edit the whole red-flag record at once.        |  
+| POST   | `/api/v1/red-flags`                         | Create a red-flag record.                      |  
+| GET    | `/api/v1/red-flags`                         | Fetch all red-flag records.                    |  
+| GET    |` /api/v1/red-flags/<int:user_id>`           | Fetch a specific red-flag record.              |  
+| PATCH  | `/api/v1/red-flags/<int:user_id>/location`  | Edit the location of a specific record.        |  
+| PATCH  | `/api/v1/red-flags/<int:user_id>/comment`   | Edit the comment of a specific record.         |  
+| DELETE | `/api/v1/red-flags/<int:user_id>`           | Delete a specific red flag record.             |  
+| PUT    | `/api/v1/red-flags/<int:user_id>`           | Edit the whole red-flag record at once.        |  
+
+ ###Documentation  
+ [Postman Documentation](https://web.postman.co/collections/5023026-24407cd8-761e-4990-b552-8b76479420ab?workspace=4d54ae63-9d4b-4731-82b0-90598d247bfc#d43467be-dda1-426d-a15e-6023deb92546 "My postman docs link")
  
  #### Author  
  > Anthony Mwangi
