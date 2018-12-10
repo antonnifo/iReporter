@@ -21,7 +21,14 @@ iReporter enables any/every citizen to bring any form of corruption to the notic
 > ```.env
 
 #### Install all the dependencies using the command
-> pip install - r Requirements.txt
+> pip install - r Requirements.txt  
+## `.env`  
+> source venv/bin/activate  
+>export FLASK_APP = run.py  
+> FLASK_CONF = "development"  
+>FLASK_DEBUG = 1  
+>FLASK_ENV = "development"  
+
 
 #### How to Run the App
 > ```.env
