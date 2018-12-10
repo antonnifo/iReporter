@@ -72,7 +72,7 @@ class RedFlagModel():
             'createdBy': request.json.get('createdBy'),
             'type': 'red-flags',
             'location': request.json.get('location'),
-            'status': "draft",
+            'status': "under investigation",
             'images': request.json.get('images'),
             'videos': request.json.get('videos'),
             'title': request.json.get('title'),
