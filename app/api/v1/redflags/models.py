@@ -1,4 +1,4 @@
-"""model for views"""
+"""model for view for incidents"""
 import datetime
 
 from flask import jsonify, make_response, request
@@ -55,7 +55,7 @@ incidents = []
 
 
 class RedFlagModel():
-
+    """Class with methods to perform CRUD operations on the DB"""
     def __init__(self):
         self.db = incidents
         if len(incidents) == 0:
