@@ -33,6 +33,7 @@ class UserSignUp(Resource):
             ]
         }), 201)
 
+
 class UserSignIn(Resource):
     """Class containing user login method"""
 
@@ -53,7 +54,6 @@ class UserSignIn(Resource):
                 "message": "password is incorrect"
             }), 200)
 
-        
         return make_response(jsonify({
             "status": 200,
             "data": [
@@ -61,7 +61,8 @@ class UserSignIn(Resource):
                     "user": user
                 }
             ]
-        }), 200)        
+        }), 200)
+
 
 class Users(Resource):
     """Class with methods for dealing with all users"""
