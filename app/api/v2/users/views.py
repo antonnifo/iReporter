@@ -62,3 +62,16 @@ class UserSignIn(Resource):
                 }
             ]
         }), 200)        
+
+class Users(Resource):
+    """Class with methods for dealing with all users"""
+
+    def __init__(self):
+        self.db = UserModel()
+
+    def get(self):
+        """method to get all users"""
+        return make_response(jsonify({
+            "status": 200,
+            "data": self.db.find_users()
+        }), 200)
