@@ -1,0 +1,34 @@
+"""Views for users"""
+import datetime
+
+from flask import jsonify, make_response, request
+from flask_restful import Resource
+
+import jwt
+from .models import UserModel
+
+
+class UserSignUp(Resource):
+    """Class with user signup post method"""
+
+    def __init__(self):
+        self.db = UserModel()
+
+    def post(self):
+        """method to post user details"""
+        user = self.db.save()
+
+        if user == "email already exists":
+            return make_response(jsonify({
+                "status": 400,
+                "error": "email already exists"
+            }), 400)
+        return make_response(jsonify({
+            "status": 201,
+            "data": [
+                {
+                    "user": user,
+                    "message": "Account created"
+                }
+            ]
+        }), 201)
