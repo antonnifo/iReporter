@@ -33,7 +33,7 @@ class Incidents(Resource):
         }), 201)
 
     def get(self):
-        """docstring for getting all the incidents posted"""
+        """docstring for getting all the incidents posted by users"""
         self.db.find_all()
         return make_response(jsonify({
             "status": 200,
