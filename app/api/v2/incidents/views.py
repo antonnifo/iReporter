@@ -108,3 +108,35 @@ class UpdateLocation(Resource):
                     "message": "Updated incident record's location"
                 }
             }), 200)
+
+
+class UpdateComment(Resource):
+    """docstring for patching comment"""
+
+    def __init__(self):
+        self.db = IncidentModel()
+
+    def patch(self, incident_id):
+        """method to update comment in an incident"""
+        incident = self.db.find_by_id(incident_id)
+
+        if incident == "incident does not exit":
+            return make_response(jsonify({
+                "status": 404,
+                "error": "incident does not exit"
+            }), 404)
+
+        edit_status = self.db.edit_incident_comment(incident_id)
+        if edit_status == "keyerror":
+            return make_response(jsonify({
+                "status": 500,
+                "error": "KeyError Incident's comment not updated"
+            }), 500)
+        elif edit_status == "comment updated":
+            return make_response(jsonify({
+                "status": 200,
+                "data": {
+                    "id": incident_id,
+                    "message": "Updated incident record's comment"
+                }
+            }), 200)
