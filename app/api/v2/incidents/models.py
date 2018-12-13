@@ -144,7 +144,7 @@ class IncidentModel:
         location = request.json.get('location')
         incident = self.find_by_id(incident_id)
         if incident == "incident does not exit":
-            return "incident does not exit"
+            return None
 
         query = """UPDATE incidents SET location='{0}' WHERE incidents_id={1}""".format(
             location, incident_id)
