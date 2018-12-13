@@ -59,4 +59,19 @@ class Incident(Resource):
         return make_response(jsonify({
             "status": 200,
             "data": incident
-        }), 200)    
+        }), 200)
+
+    def delete(self, incident_id):
+        """docstring for deleting an incident"""
+        incident = self.db.find_by_id(incident_id)
+        if incident is "incident does not exit":
+            return make_response(jsonify({
+                "status": 404,
+                "error": "rincident does not exit"
+            }), 404)
+        delete_status = self.db.delete(incident_id)
+        if delete_status == "deleted":
+            return make_response(jsonify({
+                "status": 200,
+                "data": 'incident record has been deleted'
+            }), 200)            
