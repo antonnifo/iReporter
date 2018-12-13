@@ -125,7 +125,7 @@ class IncidentModel:
         if self.find_by_id(incident_id) == None:
             return None
 
-        query = """UPDATE incidents SET status='{0}' WHERE id={1}""".format(
+        query = """UPDATE incidents SET status='{0}' WHERE incidents_id={1}""".format(
             status, incident_id)
         con = self.db
         self.cursor.execute(query)
