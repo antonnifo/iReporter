@@ -81,22 +81,7 @@ class IncidentModel:
             incident_type)
         self.cursor.execute(query)
         results = self.cursor.fetchall()
-
-        if self.cursor.rowcount == 0:
-            return None
-
-        for result in results:
-            incident_data = {
-                'id': result['incidents_id'],
-                'createdOn': result['createdon'],
-                'createdBy': result['createdby'],
-                'type': result['type'],
-                'location': result['location'],
-                'status': result['status'],
-                'title': result['title'],
-                'comment': result['comment']
-            }
-        return incident_data
+        return results
 
     def find_by_id(self, incident_id):
         query = """SELECT * from incidents WHERE  incidents_id={0}""".format(

@@ -171,3 +171,24 @@ class UpdateStatus(Resource):
                     "message": "Updated incident's status"
                 }
             }), 200) 
+
+class Filter(Resource):
+    """docstring filtering incidents by type"""
+
+    def __init__(self):
+        """initiliase the incident class"""
+        self.db = IncidentModel()
+
+    def get(self, incident_type):
+        """method for getting a specific group of incidents"""
+        incident = self.db.find_by_type(incident_type)
+        if incident == "incident does not exit":
+            return make_response(jsonify({
+                "status": 404,
+                "error": "incident does not exit"
+            }), 404)
+
+        return make_response(jsonify({
+            "status": 200,
+            "data": incident
+        }), 200)
