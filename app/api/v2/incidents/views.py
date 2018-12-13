@@ -40,6 +40,7 @@ class Incidents(Resource):
             "data": self.db.find_all()
         }), 200)
 
+
 class Incident(Resource):
     """docstring of a single incident"""
 
@@ -51,11 +52,11 @@ class Incident(Resource):
         """method for getting a specific incident"""
         incident = self.db.find_by_id(incident_id)
         if incident == "incident does not exit":
-               return make_response(jsonify({
-                    "status": 404,
-                    "error": "incident does not exit"
-                }), 404)
-       
+            return make_response(jsonify({
+                "status": 404,
+                "error": "incident does not exit"
+            }), 404)
+
         return make_response(jsonify({
             "status": 200,
             "data": incident
@@ -74,4 +75,36 @@ class Incident(Resource):
             return make_response(jsonify({
                 "status": 200,
                 "data": 'incident record has been deleted'
-            }), 200)            
+            }), 200)
+
+
+class UpdateLocation(Resource):
+    """class to update incident location"""
+
+    def __init__(self):
+        """initiliase the update location class"""
+        self.db = IncidentModel()
+
+    def patch(self, incident_id):
+        """method to update redflag location"""
+        incident = self.db.find_by_id(incident_id)
+
+        if incident == "incident does not exist":
+            return make_response(jsonify({
+                "status": 404,
+                "error": "Incident does not exist"
+            }), 404)
+        edit_status = self.db.edit_incident_location(incident_id)
+        if edit_status == "keyerror":
+            return make_response(jsonify({
+                "status": 500,
+                "error": "KeyError Incidents location not updated"
+            }), 500)
+        elif edit_status == "location updated":
+            return make_response(jsonify({
+                "status": 200,
+                "data": {
+                    "id": incident_id,
+                    "message": "Updated incident record's location"
+                }
+            }), 200)
