@@ -5,10 +5,7 @@ import psycopg2 as p
 import psycopg2.extras
 
 url = "dbname='ireporter' host='localhost' port='5432' user='postgres' password='bssc4344'"
-# test_url = "dbname='test_ireporter' host='localhost' port='5432' user='antonnifo' password='root123'"
-
-# db_url = os.getenv('DATABASE_URL')
-
+test_url = "dbname='test_ireporter' host='localhost' port='5432' user='antonnifo' password='root123'"
 
 def connection(url):
     con = p.connect(url)
@@ -46,18 +43,6 @@ def destroy_tables():
     except:
         print("Failed to Destroy tables")
 
-# def destroy_test_tables():
-#     con = connection(test_url)
-#     curr = con.cursor()
-#     users  = "DROP TABLE IF EXISTS users CASCADE"
-#     incidents = "DROP TABLE IF EXISTS incidents CASCADE"
-#     queries = [incidents, users]
-#     try:
-#         for query in queries:
-#             curr.execute(query)
-#         con.commit()
-#     except:
-#         print("Failed to Destroy tables")
 
 def tables():
     tbl1 = """CREATE TABLE IF NOT EXISTS incidents (
@@ -84,3 +69,26 @@ def tables():
 
     queries = [tbl1, tbl2]
     return queries
+
+def test_user_admin():
+    user_admin = {
+        "first_name": "john",     
+        "last_name": "doe",
+        "email": "johndoe@example.com",
+        "phone": "0708767676",
+        "isAdmin": True,
+        "date_created": "Thu, 13 Dec 2018 21:00:00 GMT",
+        "password": "pbkdf2:sha256:50000$eVeQIfa4$80661334e719180f1e5fd09cfeb6d5f75b009caaacd5983eaf74024c09c88632" 
+       
+   
+    }
+    query = """INSERT INTO users (first_name,last_name,email,phone,password,isAdmin,date_created) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}');""".format(
+    user_admin['first_name'], user_admin['last_name'], user_admin['email'], user_admin['phone'], user_admin['password'], user_admin['isAdmin'], user_admin['date_created'])
+    conn = connection(url)
+    cursor = conn.cursor()
+    try:
+        cursor.execute(query)
+        conn.commit()
+        print('super admin created')
+    except:
+        return "user already exists"

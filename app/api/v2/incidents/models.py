@@ -4,7 +4,7 @@ from flask import request
 from flask_restful import reqparse
 from app.db_con import connection, url, cursor
 import re
-
+import psycopg2.extras
 from .validators import validate_integer, validate_coordinates, validate_string
 
 parser = reqparse.RequestParser(bundle_errors=True)
@@ -22,12 +22,7 @@ parser.add_argument('type',
                     help="This field cannot be left "
                          "blank or Bad choice: {error_msg}"
                     )
-parser.add_argument('status',
-                    type=str,
-                    required=True,
-                    choices=("resolved", "under investigation", "rejected"),
-                    help="This field cannot be left blank or should only be resolved ,under investigation or rejected"
-                    )
+
 parser.add_argument('images',
                     action='append',
                     help="This field can be left blank!"
@@ -56,20 +51,20 @@ class IncidentModel:
         self.db = connection(url)
         self.cursor = cursor(url)
 
-    def save(self, user_id=1):
+    def save(self, user_id):
         parser.parse_args()
         data = {
             'createdOn': datetime.datetime.utcnow(),
             'createdBy': user_id,
             'type': request.json.get('type'),
             'location': request.json.get('location'),
-            'status': "under investigation",
+            'status': "draft",
             'title': request.json.get('title'),
             'comment': request.json.get('comment')
         }
 
         query = """INSERT INTO incidents (createdon,createdby,type,location,status,title,comment) VALUES('{0}',{1},'{2}','{3}','{4}','{5}','{6}');""".format(
-            data['createdOn'], data['createdBy'], data['type'], data['location'], data['status'], data['title'], data['comment'])
+        data['createdOn'], data['createdBy'], data['type'], data['location'], data['status'], data['title'], data['comment'])
         con = self.db
         cursor = con.cursor()
         cursor.execute(query)
@@ -79,30 +74,22 @@ class IncidentModel:
     def find_by_type(self, incident_type):
         query = """SELECT * from incidents WHERE type='{0}'""".format(
             incident_type)
-        self.cursor.execute(query)
-        results = self.cursor.fetchall()
+        conn = self.db
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
+        cursor.execute(query)
+        results = cursor.fetchall()
         return results
 
     def find_by_id(self, incident_id):
         query = """SELECT * from incidents WHERE  incidents_id={0}""".format(
-            incident_id)
-        self.cursor.execute(query)
-        result = self.cursor.fetchone()
-
-        if self.cursor.rowcount == 0:
+        incident_id) 
+        conn = self.db
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
+        cursor.execute(query)     
+        result = cursor.fetchone()
+        if cursor.rowcount == 0:
             return 'incident does not exit'
-
-        incident_data = {
-            'id': result['incidents_id'],
-            'createdOn': result['createdon'],
-            'createdBy': result['createdby'],
-            'type': result['type'],
-            'location': result['location'],
-            'status': result['status'],
-            'title': result['title'],
-            'comment': result['comment']
-        }
-        return incident_data
+        return result
 
     def edit_incident_status(self, incident_id):
         "Method to edit an incident's status"
@@ -120,8 +107,10 @@ class IncidentModel:
     def find_all(self):
         """method to find all incidents"""
         query = """SELECT * from incidents"""
-        self.cursor.execute(query)
-        incidents = self.cursor.fetchall()
+        con = self.db
+        cursor = con.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        cursor.execute(query)
+        incidents =cursor.fetchall()
         return incidents
 
     def edit_incident_location(self, incident_id):
@@ -154,10 +143,11 @@ class IncidentModel:
         return 'comment updated'
 
     def delete(self, incident_id):
-        "Method to delete an incident record"
+        "Method to delete an incident record by id"
         incident = self.find_by_id(incident_id)
         if incident is None:
             return None
+
         query = """DELETE FROM incidents WHERE incidents_id={0}""".format(
             incident_id)
         con = self.db

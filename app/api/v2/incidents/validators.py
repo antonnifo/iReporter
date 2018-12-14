@@ -16,5 +16,5 @@ def validate_coordinates(value):
 
 def validate_string(value):
     """method to check comment only contains letters"""
-    if not re.match(r"[A-Za-z1-9]", value):
+    if not re.match(r"[A-Za-z1-9]+", value):
         raise ValueError("Pattern not matched")
