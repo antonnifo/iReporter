@@ -48,8 +48,8 @@ parser.add_argument('password',
 
 def cursor(url):
     con = connection(url)
-    cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    return cur
+    cursor = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    return cursor
 
 
 class UserModel:
@@ -79,9 +79,9 @@ class UserModel:
             'isAdmin': self.isAdmin
         }
 
-        userByEmail = self.find_user_by_email(data['email'])
+        user_by_email = self.find_user_by_email(data['email'])
 
-        if userByEmail != None:
+        if user_by_email != None:
             return 'email already exists'
         query = """INSERT INTO users (first_name,last_name,email,phone,password,isAdmin) VALUES('{0}','{1}','{2}','{3}','{4}','{5}');""".format(
             data['first_name'], data['last_name'], data['email'], data['phone'], data['password'], data['isAdmin'])
@@ -91,10 +91,12 @@ class UserModel:
         con.commit()
         return data
 
-    def find_user_by_user_id(self, user_id):
+    def find_user_by_user_id(self, user_id=2):
         "Method to find a user by user_id"
         query = """SELECT * from users WHERE user_id='{0}'""".format(user_id)
-        self.cursor.execute(query)
+        con = self.db
+        cursor = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cursor.execute(query)
         row = self.cursor.fetchone()
 
         if self.cursor.rowcount == 0:
@@ -104,10 +106,12 @@ class UserModel:
     def find_user_by_email(self, email):
         "Method to find a user by email"
         query = """SELECT * from users WHERE email='{0}'""".format(email)
-        self.cursor.execute(query)
-        row = self.cursor.fetchall()
+        con = self.db
+        cursor = con.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        cursor.execute(query)
+        row = cursor.fetchall()
 
-        if self.cursor.rowcount == 0:
+        if cursor.rowcount == 0:
             return None
         return row
 
@@ -117,27 +121,19 @@ class UserModel:
             'password': request.json.get('password')
         }
         user = self.find_user_by_email(data['email'])
-        if user != None:
-            user_data = {
-                'id': user[0][0],
-                'first_name': user[0][1],
-                'last_name': user[0][2],
-                'email': user[0][3],
-                'phone': user[0][4],
-                'password': user[0][7]
-
-            }
         if user == None:
             return None
-        if check_password_hash(user_data['password'], data['password']) == False:
+        if check_password_hash(user[0]['password'], data['password']) == False:
             return 'incorrect password'
-        return user_data['email']
+        return user[0]['email']
 
     def find_users(self):
         """method to find all users"""
         query = """SELECT * from users"""
-        self.cursor.execute(query)
-        rows = self.cursor.fetchall()
+        con = self.db
+        cursor = con.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        cursor.execute(query)
+        rows = cursor.fetchall()
         return rows
 
     def edit_user_status(self, email):

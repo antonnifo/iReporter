@@ -1,4 +1,5 @@
 """Views for users"""
+import os
 import datetime
 
 from flask import jsonify, make_response, request
@@ -6,6 +7,8 @@ from flask_restful import Resource
 
 import jwt
 from .models import UserModel
+
+secret = os.getenv('SECRET_KEY')
 
 
 class UserSignUp(Resource):
@@ -23,12 +26,18 @@ class UserSignUp(Resource):
                 "status": 400,
                 "error": "email already exists"
             }), 400)
+        payload = {
+            "email": user['email'],
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+        }
+        token = jwt.encode(payload=payload, key=secret, algorithm='HS256')
         return make_response(jsonify({
             "status": 201,
             "data": [
                 {
-                    "user": user,
-                    "message": "Account created"
+                    "account details": user,
+                    "token": token.decode('UTF-8'),
+                    "message":"You have created an account.sign in"
                 }
             ]
         }), 201)
@@ -48,17 +57,24 @@ class UserSignIn(Resource):
                 "status": 200,
                 "message": "user does not exist"
             }), 200)
-        if user == 'invalid password':
+        if user == 'incorrect password':
             return make_response(jsonify({
                 "status": 200,
-                "message": "password is incorrect"
+                "message": "password is incorrect please try again"
             }), 200)
 
+        payload = {
+            "email": user,
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+        }
+        token = jwt.encode(payload=payload, key=secret, algorithm='HS256')
         return make_response(jsonify({
             "status": 200,
             "data": [
                 {
-                    "user": user
+                    "token": token.decode('UTF-8'),
+                    "user": user,
+                    "message":"You are now signed in you can post an incident"
                 }
             ]
         }), 200)
@@ -75,4 +91,26 @@ class Users(Resource):
         return make_response(jsonify({
             "status": 200,
             "data": self.db.find_users()
+        }), 200)
+
+
+class Search(Resource):
+    """docstring filtering incidents by type"""
+
+    def __init__(self):
+        """initiliase the incident class"""
+        self.db = UserModel()
+
+    def get(self, email):
+        """method for getting a specific user by email"""
+        user = self.db.find_user_by_email(email)
+        if user == None:
+            return make_response(jsonify({
+                "status": 404,
+                "error": "user does not exit"
+            }), 404)
+
+        return make_response(jsonify({
+            "status": 200,
+            "data": user
         }), 200)
