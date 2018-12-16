@@ -24,6 +24,7 @@ def require_token(f):
         try:
             data = jwt.decode(token, secret)
             current_user = UserModel().find_user_by_email(data['email'])
+           
         except:
             return make_response(jsonify({
                 "message": "Token is invalid"
