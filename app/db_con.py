@@ -3,9 +3,8 @@ import os
 
 import psycopg2 as p
 import psycopg2.extras
-
-url = "dbname='d4dvdlbqagea67' host='ec2-107-21-125-209.compute-1.amazonaws.com' port='5432' user='xvolcnfejipoqt' password='c454d8874d9612ed8de4f5256ac68881333d10677ff7649a49c4d3e8836e16e6'"
-test_url = "dbname='d4dvdlbqagea67' host='ec2-107-21-125-209.compute-1.amazonaws.com' port='5432' user='xvolcnfejipoqt' password='c454d8874d9612ed8de4f5256ac68881333d10677ff7649a49c4d3e8836e16e6'"
+url = "dbname='ddqe7kmi9nq4v7' host='ec2-184-72-239-186.compute-1.amazonaws.com' port='5432' user='mjvieveyngoxsx' password='0e794fd056a7a506623abe63efe9a8c6cb3850d1fc42c86f52acd7330dc48c4d' "
+test_url = "dbname='ddqe7kmi9nq4v7' host='ec2-184-72-239-186.compute-1.amazonaws.com' port='5432' user='mjvieveyngoxsx' password='0e794fd056a7a506623abe63efe9a8c6cb3850d1fc42c86f52acd7330dc48c4d' "
 
 
 def connection(url):
