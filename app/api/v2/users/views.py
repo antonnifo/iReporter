@@ -22,25 +22,32 @@ class UserSignUp(Resource):
         user = self.db.save()
 
         if user == "email already exists":
-            return make_response(jsonify({
+            return jsonify({
                 "status": 400,
                 "error": "email already exists"
-            }), 400)
+            })
         payload = {
             "email": user['email'],
             "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
         }
         token = jwt.encode(payload=payload, key=secret, algorithm='HS256')
-        return make_response(jsonify({
+
+        user_details = {
+                    "name" : user['first_name']+' '+user['last_name'],
+                    "email" : user['email'],
+                    "phone" : user['phone']
+
+        }
+        return jsonify({
             "status": 201,
             "data": [
                 {
-                    "account details": user,
+                    "account details": user_details,
                     "token": token.decode('UTF-8'),
-                    "message":"You have created an account.sign in"
+                    "message":"You have created an account you can now post incidents"
                 }
             ]
-        }), 201)
+        })
 
 
 class UserSignIn(Resource):
@@ -52,23 +59,24 @@ class UserSignIn(Resource):
     def post(self):
         """method to get a specific user"""
         user = self.db.log_in()
-        if user == None:
-            return make_response(jsonify({
-                "status": 200,
+        if user is None:
+            return jsonify({
+                "status": 404,
                 "message": "user does not exist"
-            }), 200)
+            })
         if user == 'incorrect password':
-            return make_response(jsonify({
-                "status": 200,
-                "message": "password is incorrect please try again"
-            }), 200)
+            return jsonify({
+                "status": 401,
+                "message": "password or email is incorrect please try again"
+            })
 
         payload = {
             "email": user,
             "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
         }
         token = jwt.encode(payload=payload, key=secret, algorithm='HS256')
-        return make_response(jsonify({
+        
+        return jsonify({
             "status": 200,
             "data": [
                 {
@@ -77,7 +85,7 @@ class UserSignIn(Resource):
                     "message":"You are now signed in you can post an incident"
                 }
             ]
-        }), 200)
+        })
 
 
 class Users(Resource):
@@ -88,10 +96,10 @@ class Users(Resource):
 
     def get(self):
         """method to get all users"""
-        return make_response(jsonify({
+        return jsonify({
             "status": 200,
             "data": self.db.find_users()
-        }), 200)
+        })
 
 
 class Search(Resource):
@@ -105,12 +113,12 @@ class Search(Resource):
         """method for getting a specific user by email"""
         user = self.db.find_user_by_email(email)
         if user == None:
-            return make_response(jsonify({
+            return jsonify({
                 "status": 404,
                 "error": "user does not exit"
-            }), 404)
+            })
 
-        return make_response(jsonify({
+        return jsonify({
             "status": 200,
             "data": user
-        }), 200)
+        })

@@ -2,17 +2,16 @@
 import datetime
 from flask import request
 from flask_restful import reqparse
-from app.db_con import connection, url, cursor
+from app.db_con import connection, url
 import re
 import psycopg2.extras
-from .validators import parser, parser_edit_location, parser_edit_comment,parser_edit_status
+from ..validators import parser, parser_edit_location, parser_edit_comment,parser_edit_status
 
 class IncidentModel:
     """Class with methods to perform CRUD operations on the DB"""
 
     def __init__(self):
         self.db = connection(url)
-        self.cursor = cursor(url)
 
     def save(self, user_id, incident_type):
         parser.parse_args()

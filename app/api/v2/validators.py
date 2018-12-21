@@ -8,23 +8,32 @@ def validate_integer(value):
     if not re.match(r"^[0-9]+$", value):
         raise ValueError("Pattern not matched")
 
-
 def validate_coordinates(value):
     """method to check for valid coordinates"""
     if not re.match(r"^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$", value):
         raise ValueError("Pattern not matched")
 
-
 def validate_string(value):
-    """method to check comment only contains letters"""
+    """method to check that the field takes only letters"""
     if not re.match(r"[A-Za-z1-9]+", value):
         raise ValueError("Pattern not matched")
+
+def validate_password(value):
+    """method to check if password contains more than 8 characters"""
+    if not re.match(r"^[A-Za-z0-9!@#$%^&+*=]{8,}$", value):
+        raise ValueError("Password should be at least 8 characters")
+
+def validate_email(value):
+    """method to check for valid email"""
+    if not re.match(r"^[^@]+@[^@]+\.[^@]+$", value):
+        raise ValueError("write a proper Email")
 
 
 parser = reqparse.RequestParser(bundle_errors=True)
 parser_edit_location = reqparse.RequestParser(bundle_errors=True)
 parser_edit_comment = reqparse.RequestParser(bundle_errors=True)
 parser_edit_status = reqparse.RequestParser(bundle_errors=True)
+
 parser.add_argument('location',
                     type=validate_coordinates,
                     required=True,

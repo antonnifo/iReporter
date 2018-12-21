@@ -42,7 +42,7 @@ class Interventions(Resource):
 
     @require_token
     def post(current_user, self):
-        """docstring for saving an intervention"""
+        """method for saving an intervention"""
         incident = self.db.save(
             current_user[0]['user_id'], incident_type='intervention')
         return jsonify({
@@ -53,7 +53,7 @@ class Interventions(Resource):
 
     @require_token
     def get(current_user, self):
-        """docstring for getting all the interventions posted by users"""
+        """method for getting all the interventions posted by users"""
         self.db.find_by_type(incident_type='intervention')
         return make_response(jsonify({
             "status": 200,
@@ -217,7 +217,7 @@ class UpdateInterventionStatus(Resource):
             })
 
         edit_status = self.db.edit_incident_status(
-            incident_id, ncident_type='intervention')
+            incident_id, incident_type='intervention')
         if edit_status == "keyerror":
             return jsonify({
                 "status": 500,
@@ -415,7 +415,7 @@ class UpdateRedflagStatus(Resource):
             })
 
         edit_status = self.db.edit_incident_status(
-            incident_id, ncident_type='red-flag')
+            incident_id, incident_type='red-flag')
         if edit_status == "keyerror":
             return jsonify({
                 "status": 500,
