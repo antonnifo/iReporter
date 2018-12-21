@@ -4,9 +4,8 @@ import os
 import psycopg2 as p
 import psycopg2.extras
 
-url = os.getenv('DATABASE_URL')
-test_url = os.getenv('DATABASE_URL_TEST')
-
+test_url = "dbname='test_ireporter' host='localhost' port='5432' user='postgres' password='bssc4344'"
+url = os.getenv('DATABASE_URL',test_url )
 
 def connection(url):
     con = p.connect(url)

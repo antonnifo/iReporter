@@ -30,7 +30,6 @@ class TestingConfig(Config):
     TESTING = True
     DEBUG = True
 
-
 class ProductionConfig(Config):
     """
     Production configurations
