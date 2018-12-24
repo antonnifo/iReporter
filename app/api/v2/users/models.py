@@ -48,7 +48,7 @@ parser.add_argument('password',
 
 
 class UserModel:
-    """class for dealing with user data"""
+    """class for manipulating user data"""
 
     def __init__(self):
         self.registered = datetime.datetime.utcnow()

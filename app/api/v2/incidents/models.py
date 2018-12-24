@@ -69,8 +69,8 @@ class IncidentModel:
     def find_all(self):
         """method to find all incidents"""
         query = """SELECT * from incidents"""
-        con = self.db
-        cursor = con.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        conn = self.db
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         cursor.execute(query)
         incidents = cursor.fetchall()
         return incidents

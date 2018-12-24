@@ -2,42 +2,25 @@
 import datetime
 import os
 from functools import wraps
+
 import jwt
-from flask import jsonify, make_response, request, session
+from flask import jsonify, make_response, request
 from flask_restful import Resource
+
 from app.api.v2.users.models import UserModel
+
+from ..validators import (can_only_edit_draft, non_existance_incident,
+                          only_admin_can_edit, only_creater_can_delete,
+                          only_creater_can_edit)
 from .models import IncidentModel
-secret = os.getenv('SECRET_KEY')
-
-def require_token(f):
-    @wraps(f)
-    def secure(*args, ** kwargs):
-        token = None
-
-        if 'token' in request.headers:
-            token = request.headers['token']
-        if not token:
-            return make_response(jsonify({
-                "message": "Token is missing"
-            }), 401)
-
-        try:
-            data = jwt.decode(token, secret)
-            current_user = UserModel().find_user_by_email(data['email'])
-           
-        except:
-            return make_response(jsonify({
-                "message": "Token is invalid"
-            }), 401)
-        return f(current_user, *args, **kwargs)
-    return secure
+from app.api.v2.token_decorator import require_token
 
 
 class Interventions(Resource):
-    """docstring for incidents class"""
+    """docstring for interventions class"""
 
     def __init__(self):
-        """initiliase the incidents class"""
+        """initiliase the interventions class"""
         self.db = IncidentModel()
 
     @require_token
@@ -55,17 +38,17 @@ class Interventions(Resource):
     def get(current_user, self):
         """method for getting all the interventions posted by users"""
         self.db.find_by_type(incident_type='intervention')
-        return make_response(jsonify({
+        return jsonify({
             "status": 200,
             "data": self.db.find_by_type(incident_type='intervention')
-        }), 200)
+        })
 
 
 class Intervention(Resource):
-    """docstring of a single incident"""
+    """docstring of a single intervention"""
 
     def __init__(self):
-        """initiliase the incident class"""
+        """initiliase the intervention class"""
         self.db = IncidentModel()
 
     @require_token
@@ -74,32 +57,23 @@ class Intervention(Resource):
         incident = self.db.find_by_id_type(
             incident_id, incident_type='intervention')
         if incident == "incident does not exit":
-            return make_response(jsonify({
-                "status": 404,
-                "error": "incident does not exit"
-            }))
+            return non_existance_incident()
 
-        return make_response(jsonify({
+        return jsonify({
             "status": 200,
             "data": incident
-        }), 200)
+        })
 
     @require_token
     def delete(current_user, self, incident_id):
-        """docstring for deleting an incident"""
+        """docstring for deleting an intervention"""
         incident = self.db.find_by_id_type(
             incident_id, incident_type='intervention')
         if incident == "incident does not exit":
-            return jsonify({
-                "status": 404,
-                "error": "incident does not exit"
-            })
+            return non_existance_incident()
 
         if current_user[0]["user_id"] != incident["createdby"]:
-            return jsonify({
-                "status": 401,
-                "error": "sorry you can't delete an incident you din't create"
-            })
+            return only_creater_can_delete()
 
         if self.db.delete(incident_id, incident_type='intervention') == "deleted":
             return jsonify({
@@ -109,42 +83,29 @@ class Intervention(Resource):
 
 
 class UpdateInterventionLocation(Resource):
-    """class to update incident location"""
+    """class to update intervention location"""
 
     def __init__(self):
-        """initiliase the update location class"""
+        """initiliase the update location class of an intervention"""
         self.db = IncidentModel()
 
     @require_token
     def patch(current_user, self, incident_id):
-        """method to update an incidents location"""
+        """method to update an intervention location"""
         incident = self.db.find_by_id_type(
             incident_id, incident_type='intervention')
 
         if incident == "incident does not exit":
-            return jsonify({
-                "status": 404,
-                "error": "sorry Incident does not exist"
-            })
+            return non_existance_incident()
 
         if current_user[0]["user_id"] != incident['createdby']:
-            return jsonify({
-                "status": 401,
-                "error": "sorry you can't edit an incident you din't create"
-            })
+            return only_creater_can_edit()
 
-        if incident == "incident does not exit":
-            return jsonify({
-                "status": 404,
-                "error": "sorry Incident does not exist"
-            })
         edit_status = self.db.edit_incident_location(
             incident_id, incident_type='intervention')
         if edit_status == "you cant edit this":
-            return jsonify({
-                "status": 401,
-                "error": "KYou can't edit this due to it's state"
-            })
+            return can_only_edit_draft()
+
         if edit_status == "location updated":
             return jsonify({
                 "status": 200,
@@ -156,34 +117,28 @@ class UpdateInterventionLocation(Resource):
 
 
 class UpdateInterventionComment(Resource):
-    """docstring for patching comment"""
+    """docstring for patching an intervention comment"""
 
     def __init__(self):
         self.db = IncidentModel()
 
     @require_token
     def patch(current_user, self, incident_id):
-        """method to update comment in an incident"""
+        """method to update comment of an intervention"""
         incident = self.db.find_by_id_type(
             incident_id, incident_type='intervention')
         if incident == "incident does not exit":
-            return jsonify({
-                "status": 404,
-                "error": "incident does not exit"
-            })    
+            return non_existance_incident()
+
         if current_user[0]["user_id"] != incident['createdby']:
-            return jsonify({
-                "status": 401,
-                "error": "sorry you can't edit an incident you din't create"
-            })
+            return only_creater_can_edit()
 
         edit_status = self.db.edit_incident_comment(
             incident_id, incident_type='intervention')
+
         if edit_status == "you cant edit this":
-            return jsonify({
-                "status": 401,
-                "error": "You can't edit this due to it's state"
-            })
+            return can_only_edit_draft()
+
         if edit_status == "comment updated":
             return jsonify({
                 "status": 200,
@@ -195,35 +150,26 @@ class UpdateInterventionComment(Resource):
 
 
 class UpdateInterventionStatus(Resource):
-    """docstring for patching status"""
+    """docstring for patching status of an intervention"""
 
     def __init__(self):
         self.db = IncidentModel()
 
     @require_token
     def patch(current_user, self, incident_id):
-        """method to update status in an incident"""
+        """method to update status of an intervention"""
         incident = self.db.find_by_id_type(
             incident_id, incident_type='intervention')
         if incident == "incident does not exit":
-            return jsonify({
-                "status": 404,
-                "error": "incident does not exit"
-            })
+            return non_existance_incident()
+
         if current_user[0]['isadmin'] is False:
-            return jsonify({
-                "status": 401,
-                "message": "sorry Only an admin can change the status of an incident"
-            })
+            return only_admin_can_edit()
 
         edit_status = self.db.edit_incident_status(
             incident_id, incident_type='intervention')
-        if edit_status == "keyerror":
-            return jsonify({
-                "status": 500,
-                "error": "KeyError Incident's comment not updated"
-            })
-        elif edit_status == "status updated":
+
+        if edit_status == "status updated":
             return jsonify({
                 "status": 200,
                 "data": {
@@ -234,10 +180,10 @@ class UpdateInterventionStatus(Resource):
 
 
 class Redflags(Resource):
-    """docstring for incidents class"""
+    """docstring for redflags class"""
 
     def __init__(self):
-        """initiliase the incidents class"""
+        """initiliase the redflags class"""
         self.db = IncidentModel()
 
     @require_token
@@ -265,19 +211,16 @@ class Redflag(Resource):
     """docstring of a single redflag incident"""
 
     def __init__(self):
-        """initiliase the incident class"""
+        """initiliase the redflag class"""
         self.db = IncidentModel()
 
     @require_token
     def get(current_user, self, incident_id):
-        """method for getting a specific intervention"""
+        """method for getting a specific redflag record"""
         incident = self.db.find_by_id_type(
             incident_id, incident_type='red-flag')
         if incident == "incident does not exit":
-            return make_response(jsonify({
-                "status": 404,
-                "error": "incident does not exit"
-            }))
+            return non_existance_incident()
 
         return make_response(jsonify({
             "status": 200,
@@ -286,20 +229,14 @@ class Redflag(Resource):
 
     @require_token
     def delete(current_user, self, incident_id):
-        """docstring for deleting an incident"""
+        """docstring for deleting a redf;ag"""
         incident = self.db.find_by_id_type(
             incident_id, incident_type='red-flag')
         if incident == "incident does not exit":
-            return jsonify({
-                "status": 404,
-                "error": "incident does not exit"
-            })
+            return non_existance_incident()
 
         if current_user[0]["user_id"] != incident["createdby"]:
-            return jsonify({
-                "status": 401,
-                "error": "sorry you can't delete an incident you din't create"
-            })
+            return only_creater_can_delete()
 
         if self.db.delete(incident_id, incident_type='red-flag') == "deleted":
             return jsonify({
@@ -322,29 +259,17 @@ class UpdateRedflagLocation(Resource):
             incident_id, incident_type='red-flag')
 
         if incident == "incident does not exit":
-            return jsonify({
-                "status": 404,
-                "error": "sorry Incident does not exist"
-            })
+            return non_existance_incident()
 
         if current_user[0]["user_id"] != incident['createdby']:
-            return jsonify({
-                "status": 401,
-                "error": "sorry you can't edit an incident you din't create"
-            })
+            return only_creater_can_edit()
 
-        if incident == "incident does not exit":
-            return jsonify({
-                "status": 404,
-                "error": "sorry Incident does not exist"
-            })
         edit_status = self.db.edit_incident_location(
             incident_id, incident_type='red-flag')
+
         if edit_status == "you cant edit this":
-            return jsonify({
-                "status": 401,
-                "error": "you can't edit this due to it's status"
-            })
+            return can_only_edit_draft()
+
         if edit_status == "location updated":
             return jsonify({
                 "status": 200,
@@ -356,7 +281,7 @@ class UpdateRedflagLocation(Resource):
 
 
 class UpdateRedflagComment(Resource):
-    """docstring for patching comment"""
+    """docstring for patching a redflag comment"""
 
     def __init__(self):
         self.db = IncidentModel()
@@ -367,23 +292,17 @@ class UpdateRedflagComment(Resource):
         incident = self.db.find_by_id_type(
             incident_id, incident_type='red-flag')
         if incident == "incident does not exit":
-            return jsonify({
-                "status": 404,
-                "error": "incident does not exit"
-            })
+            return non_existance_incident()
+
         if current_user[0]["user_id"] != incident['createdby']:
-            return jsonify({
-                "status": 401,
-                "error": "sorry you can't edit an incident you din't create"
-            })
+            return only_creater_can_edit()
 
         edit_status = self.db.edit_incident_comment(
             incident_id, incident_type='red-flag')
+
         if edit_status == "you cant edit this":
-            return jsonify({
-                "status": 500,
-                "error": "you can't edit this due to it's status"
-            })
+            return can_only_edit_draft()
+
         if edit_status == "comment updated":
             return jsonify({
                 "status": 200,
@@ -392,8 +311,10 @@ class UpdateRedflagComment(Resource):
                     "message": "Updated incident record's comment"
                 }
             })
+
+
 class UpdateRedflagStatus(Resource):
-    """docstring for patching status"""
+    """docstring for patching status of a redflag"""
 
     def __init__(self):
         self.db = IncidentModel()
@@ -404,28 +325,19 @@ class UpdateRedflagStatus(Resource):
         incident = self.db.find_by_id_type(
             incident_id, incident_type='red-flag')
         if incident == "incident does not exit":
-            return jsonify({
-                "status": 404,
-                "error": "incident does not exit"
-            })
+            return non_existance_incident()
+
         if current_user[0]['isadmin'] is False:
-            return jsonify({
-                "status": 401,
-                "message": "sorry Only an admin can change the status of an incident"
-            })
+            return only_admin_can_edit()
 
         edit_status = self.db.edit_incident_status(
             incident_id, incident_type='red-flag')
-        if edit_status == "keyerror":
-            return jsonify({
-                "status": 500,
-                "error": "KeyError Incident's comment not updated"
-            })
-        elif edit_status == "status updated":
+
+        if edit_status == "status updated":
             return jsonify({
                 "status": 200,
                 "data": {
                     "id": incident_id,
                     "message": "Updated incident's status"
                 }
-            })            
+            })

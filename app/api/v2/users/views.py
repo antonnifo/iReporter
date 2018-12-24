@@ -8,7 +8,7 @@ from flask_restful import Resource
 import jwt
 from .models import UserModel
 
-secret = os.getenv('SECRET_KEY')
+secret = "Bssc010j2014"
 
 
 class UserSignUp(Resource):
@@ -33,9 +33,9 @@ class UserSignUp(Resource):
         token = jwt.encode(payload=payload, key=secret, algorithm='HS256')
 
         user_details = {
-                    "name" : user['first_name']+' '+user['last_name'],
-                    "email" : user['email'],
-                    "phone" : user['phone']
+            "name": user['first_name']+' '+user['last_name'],
+            "email": user['email'],
+            "phone": user['phone']
 
         }
         return jsonify({
@@ -44,7 +44,7 @@ class UserSignUp(Resource):
                 {
                     "account details": user_details,
                     "token": token.decode('UTF-8'),
-                    "message":"You have created an account you can now post incidents"
+                    "message": "You have created an account you can now post incidents"
                 }
             ]
         })
@@ -75,14 +75,14 @@ class UserSignIn(Resource):
             "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
         }
         token = jwt.encode(payload=payload, key=secret, algorithm='HS256')
-        
+
         return jsonify({
             "status": 200,
             "data": [
                 {
                     "token": token.decode('UTF-8'),
                     "user": user,
-                    "message":"You are now signed in you can post an incident"
+                    "message": "You are now signed in you can post an incident"
                 }
             ]
         })

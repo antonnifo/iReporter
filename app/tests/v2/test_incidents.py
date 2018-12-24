@@ -59,7 +59,7 @@ class IncidentTestCase(unittest.TestCase):
         self.redflag = {
             "createdBy": 1,
             "type": "redflag",
-            "location": "66, 12",
+            "location": "66, 13",
             "status": "draft",
             "title": "NYS scandal",
             "comment": "act soon",
