@@ -3,8 +3,9 @@ import os
 
 import psycopg2 as p
 import psycopg2.extras
-url = "dbname='ddqe7kmi9nq4v7' host='ec2-184-72-239-186.compute-1.amazonaws.com' port='5432' user='mjvieveyngoxsx' password='0e794fd056a7a506623abe63efe9a8c6cb3850d1fc42c86f52acd7330dc48c4d' "
-test_url = "dbname='ddqe7kmi9nq4v7' host='ec2-184-72-239-186.compute-1.amazonaws.com' port='5432' user='mjvieveyngoxsx' password='0e794fd056a7a506623abe63efe9a8c6cb3850d1fc42c86f52acd7330dc48c4d' "
+
+test_url = "dbname='test_ireporter' host='localhost' port='5432' user='postgres' password='bssc4344'"
+url = os.getenv('DATABASE_URL',test_url )
 
 
 def connection(url):
@@ -124,7 +125,7 @@ def test_redflag():
     incident = {
         "createdBy": 1,
         "type": "redflag",
-        "location": "66, 12",
+        "location": "66, 13",
         "status": "draft",
         "title": "NYS scandal",
         "comment": "act soon",

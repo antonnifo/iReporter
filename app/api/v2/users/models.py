@@ -8,7 +8,7 @@ from flask_restful import reqparse
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.db_con import connection, url
-from .validators import validate_email, validate_string, validator_integer
+from ..validators import validate_email, validate_string, validate_integer, validate_password
 
 parser = reqparse.RequestParser(bundle_errors=True)
 parser.add_argument('first_name',
@@ -33,33 +33,27 @@ parser.add_argument('email',
                     )
 
 parser.add_argument('phone',
-                    type=validator_integer,
+                    type=validate_integer,
                     required=False,
                     nullable=True,
                     help="This field cannot be left blank or should be properly formated"
                     )
 
 parser.add_argument('password',
+                    type=validate_password,
                     required=True,
                     nullable=False,
-                    help="This field cannot be left blank or should be properly formated"
+                    help="This field cannot be left blank or should be properly formated and should contain atleast 8 characters"
                     )
 
 
-def cursor(url):
-    con = connection(url)
-    cursor = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    return cursor
-
-
 class UserModel:
-    """class for dealing with user data"""
+    """class for manipulating user data"""
 
     def __init__(self):
         self.registered = datetime.datetime.utcnow()
         self.isAdmin = False
         self.db = connection(url)
-        self.cursor = cursor(url)
 
     def set_pswd(self, password):
         '''salting the passwords '''
@@ -97,9 +91,9 @@ class UserModel:
         con = self.db
         cursor = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cursor.execute(query)
-        row = self.cursor.fetchone()
+        row = cursor.fetchone()
 
-        if self.cursor.rowcount == 0:
+        if cursor.rowcount == 0:
             return None
         return row
 
