@@ -43,26 +43,36 @@ parser_edit_status = reqparse.RequestParser(bundle_errors=True)
 parser.add_argument('location',
                     type=validate_coordinates,
                     required=True,
+                    trim=True,
+                    nullable=False,
                     help="This field cannot be left blank or improperly formated"
                     )
 parser_edit_location.add_argument('location',
                                   type=validate_coordinates,
                                   required=True,
+                                  trim=True,
+                                  nullable=False,
                                   help="This field cannot be left blank or improperly formated"
                                   )
 parser.add_argument('comment',
                     type=validate_string,
                     required=True,
+                    trim=True,
+                    nullable=False,
                     help="This field cannot be left blank or should be properly formated"
                     )
 parser_edit_comment.add_argument('comment',
                                  type=validate_string,
                                  required=True,
+                                 trim=True,
+                                 nullable=False,
                                  help="This field cannot be left blank or should be properly formated"
                                  )
 parser_edit_status.add_argument('status',
                                 type=str,
                                 required=True,
+                                trim=True,
+                                nullable=False,
                                 choices=(
                                     "resolved", "under investigation", "rejected"),
                                 help="This field cannot be left blank or should only be resolved ,under investigation or rejected"
@@ -70,6 +80,8 @@ parser_edit_status.add_argument('status',
 parser.add_argument('title',
                     type=validate_string,
                     required=True,
+                    trim=True,
+                    nullable=False,
                     help="This field cannot be left blank or should be properly formated"
                     )
 
@@ -78,13 +90,13 @@ def non_existance_incident():
     '''return message for an incident that does not exist'''
     return jsonify({
         "status": 404,
-        "error": "incident does not exit"
+        "error": "incident does not exist"
     })
 
 
 def only_creater_can_edit():
     '''return message for only creater of an incident can patch it'''
-    jsonify({
+    return jsonify({
             "status": 401,
             "error": "sorry you can't edit an incident you din't create"
             })
@@ -92,7 +104,7 @@ def only_creater_can_edit():
 
 def only_admin_can_edit():
     '''return message for only an admin can change status of an incident'''
-    jsonify({
+    return jsonify({
             "status": 403,
             "message": "sorry Only an admin can change the status of an incident"
             })
@@ -100,7 +112,7 @@ def only_admin_can_edit():
 
 def only_creater_can_delete():
     '''return message that only create of an incident can delete it'''
-    jsonify({
+    return jsonify({
             "status": 401,
             "error": "sorry you can't delete an incident you din't create"
             })
@@ -108,7 +120,7 @@ def only_creater_can_delete():
 
 def can_only_edit_draft():
     '''return message that u can patch an incident only on its draft state'''
-    jsonify({
+    return jsonify({
             "status": 401,
             "error": "You can't edit this due to it's state"
             })

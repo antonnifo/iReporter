@@ -3,12 +3,13 @@ import datetime
 
 from flask import jsonify, make_response, request
 from flask_restful import Resource, reqparse
-from .validators import validator_integer, validate_coordinates, validate_string
+from app.api.v2.validators import (
+    validate_integer, validate_coordinates, validate_string)
 
 parser = reqparse.RequestParser(bundle_errors=True)
 
 parser.add_argument('createdBy',
-                    type=validator_integer,
+                    type=validate_integer,
                     required=True,
                     help="Value Must be an Interger as it is an ID or cant be left blank"
                     )
@@ -56,6 +57,7 @@ incidents = []
 
 class RedFlagModel():
     """Class with methods to perform CRUD operations on the DB"""
+
     def __init__(self):
         self.db = incidents
         if len(incidents) == 0:
@@ -78,7 +80,7 @@ class RedFlagModel():
             'title': request.json.get('title'),
             'comment': request.json.get('comment')
         }
-        
+
         self.db.append(data)
         return self.id
 

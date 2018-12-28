@@ -7,8 +7,7 @@ from flask import jsonify, make_response, request
 
 from app.api.v2.users.models import UserModel
 
-# secret = os.getenv('SECRET_KEY')
-secret = "Bssc010j2014"
+secret = os.getenv('SECRET_KEY')
 
 def require_token(f):
     @wraps(f)

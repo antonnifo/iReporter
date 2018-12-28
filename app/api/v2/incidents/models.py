@@ -2,10 +2,12 @@
 import datetime
 from flask import request
 from flask_restful import reqparse
-from app.db_con import connection, url
+from app.db_con import connection
+from app.db_con import DATABASE_URL as url
 import re
 import psycopg2.extras
-from ..validators import parser, parser_edit_location, parser_edit_comment,parser_edit_status
+from ..validators import parser, parser_edit_location, parser_edit_comment, parser_edit_status
+
 
 class IncidentModel:
     """Class with methods to perform CRUD operations on the DB"""
@@ -33,6 +35,18 @@ class IncidentModel:
         con.commit()
         return data
 
+    def find_status(self, incident_id):
+        """method to find status of an incident"""
+        query = """SELECT status from incidents WHERE  incidents_id={0} """.format(
+            incident_id)
+        con = self.db
+        cursor = con.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        cursor.execute(query)
+        status = cursor.fetchone()
+        if cursor.rowcount == 0:
+            return 'incident does not exit'
+        return status
+
     def find_by_type(self, incident_type):
         query = """SELECT * from incidents WHERE type='{0}'""".format(
             incident_type)
@@ -53,19 +67,6 @@ class IncidentModel:
             return 'incident does not exit'
         return result
 
-    def edit_incident_status(self, incident_id, incident_type):
-        "Method to edit an incident's status"
-        parser_edit_status.parse_args()
-        status = request.json.get('status')
-        if self.find_by_id_type(incident_id, incident_type) == None:
-            return None
-        query = """UPDATE incidents SET status='{0}' WHERE incidents_id={1}""".format(
-            status, incident_id)
-        con = self.db
-        self.cursor.execute(query)
-        con.commit()
-        return 'status updated'
-
     def find_all(self):
         """method to find all incidents"""
         query = """SELECT * from incidents"""
@@ -75,18 +76,42 @@ class IncidentModel:
         incidents = cursor.fetchall()
         return incidents
 
-    def edit_incident_location(self, incident_id, incident_type):
+    def edit_incident_status(self, incident_id, incident_type):
+        "Method to edit an incident's status"
+        parser_edit_status.parse_args()
+        status = request.json.get('status')
+
+        if self.find_by_id_type(incident_id, incident_type) == "incident does not exit":
+            return None
+
+        query = """UPDATE incidents SET status='{0}' WHERE incidents_id={1}""".format(
+            status, incident_id)
+        con = self.db
+        cursor = con.cursor()
+        cursor.execute(query)
+        con.commit()
+        return 'status updated'
+
+    def edit_incident_location(self, current_user_id, incident_id, incident_type):
         "Method to edit an incident's location"
         parser_edit_location.parse_args()
         location = request.json.get('location')
+
         incident = self.find_by_id_type(incident_id, incident_type)
+
         if incident == "incident does not exit":
             return None
-        status = self.find_status(incident_id) 
-        if status != 'draft':
-            return 'you cant edit this'    
+
+        if current_user_id != incident['createdby']:
+            return False
+
+        status = self.find_status(incident_id)
+        if status != {'status': 'draft                                                           '}:
+            return 'you cant edit this'
+
         query = """UPDATE incidents SET location='{0}' WHERE incidents_id={1}""".format(
             location, incident_id)
+
         con = self.db
         cursor = con.cursor()
         cursor.execute(query)
@@ -98,11 +123,14 @@ class IncidentModel:
         parser_edit_comment.parse_args()
         comment = request.json.get('comment')
         incident = self.find_by_id_type(incident_id, incident_type)
+
         if incident == "incident does not exit":
             return None
-        status = self.find_status(incident_id) 
-        if status != 'draft':
-            return 'you cant edit this'   
+
+        status = self.find_status(incident_id)
+        if status != {'status': 'draft                                                           '}:
+            return 'you cant edit this'
+
         query = """UPDATE incidents SET comment='{0}' WHERE incidents_id={1}""".format(
             comment, incident_id)
         con = self.db
@@ -124,13 +152,3 @@ class IncidentModel:
         cursor.execute(query)
         con.commit()
         return 'deleted'
-    
-    def find_status(self,incident_id):
-        """method to find status of an incident"""
-        query = """SELECT status from incidents WHERE  incidents_id={0} """.format(
-            incident_id)
-        con = self.db
-        cursor = con.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        cursor.execute(query)
-        status = cursor.fetchone()
-        return status     

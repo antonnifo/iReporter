@@ -2,10 +2,10 @@
 from flask import Blueprint
 from flask_restful import Api
 
-from .users.views import UserSignUp, UserSignIn, Users, Search
-from .incidents.views import (Interventions, Intervention, UpdateInterventionLocation,
+from .users.views import UserSignUp, UserSignIn, Users, Search, UserStatus
+from .incidents.views_interventions import (Interventions, Intervention, UpdateInterventionLocation,
                               UpdateInterventionComment, UpdateInterventionStatus)
-from .incidents.views import (
+from .incidents.views_redflags import (
     Redflags, Redflag, UpdateRedflagLocation, UpdateRedflagComment, UpdateRedflagStatus)
 
 VERSION_TWO = Blueprint('apiv2', __name__, url_prefix='/api/v2')
@@ -15,6 +15,7 @@ API.add_resource(UserSignUp, '/auth/signup')
 API.add_resource(UserSignIn, '/auth/signin')
 API.add_resource(Users, '/users')
 API.add_resource(Search, '/users/<string:email>')
+API.add_resource(UserStatus, '/users/<string:email>/status')
 API.add_resource(Interventions, '/interventions')
 API.add_resource(Intervention, '/intervention/<int:incident_id>')
 API.add_resource(UpdateInterventionLocation,
