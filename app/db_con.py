@@ -26,7 +26,7 @@ def create_tables():
 
 
 def destroy_tables():
-    con = connection(DATABASE_URL_TEST)
+    con = connection(DATABASE_URL)
     curr = con.cursor()
     users = "DROP TABLE IF EXISTS users CASCADE"
     incidents = "DROP TABLE IF EXISTS incidents CASCADE"
