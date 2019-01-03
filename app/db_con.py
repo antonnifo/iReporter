@@ -57,7 +57,7 @@ def tables():
      user_id serial PRIMARY KEY NOT NULL,
      first_name character(50) NOT NULL,
      last_name character(50),
-     email varchar(50) NOT NULL UNIQUE,
+     email varchar(50) NOT NULL,
      phone varchar(11),
      isAdmin boolean NOT NULL,  
      registered TIMESTAMP, 
