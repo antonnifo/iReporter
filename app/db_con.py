@@ -26,7 +26,7 @@ def create_tables():
 
 
 def destroy_tables():
-    con = connection(DATABASE_URL)
+    con = connection(DATABASE_URL_TEST)
     curr = con.cursor()
     users = "DROP TABLE IF EXISTS users CASCADE"
     incidents = "DROP TABLE IF EXISTS incidents CASCADE"
@@ -57,7 +57,7 @@ def tables():
      user_id serial PRIMARY KEY NOT NULL,
      first_name character(50) NOT NULL,
      last_name character(50),
-     email varchar(50) NOT NULL,
+     email varchar(50) NOT NULL UNIQUE,
      phone varchar(11),
      isAdmin boolean NOT NULL,  
      registered TIMESTAMP, 
