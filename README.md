@@ -1,22 +1,25 @@
- [![Build Status](https://travis-ci.org/antonnifo/iReporter.svg?branch=patch-comment-162297565)](https://travis-ci.org/antonnifo/iReporter) [![Coverage Status](https://coveralls.io/repos/github/antonnifo/iReporter/badge.svg?branch=develop)](https://coveralls.io/github/antonnifo/iReporter?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/f0f65e93e402e665e3c9/maintainability)](https://codeclimate.com/github/antonnifo/iReporter/maintainability)   
- ## IReporter
+ ## IReporter   [![Build Status](https://travis-ci.org/antonnifo/iReporter.svg?branch=patch-comment-162297565)](https://travis-ci.org/antonnifo/iReporter) [![Coverage Status](https://coveralls.io/repos/github/antonnifo/iReporter/badge.svg?branch=develop)](https://coveralls.io/github/antonnifo/iReporter?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/f0f65e93e402e665e3c9/maintainability)](https://codeclimate.com/github/antonnifo/iReporter/maintainability)   
+
 
 ### Tech/framework used  
-> python 3.6.7 and Flask
+> python 3.6.7 and [Flask](http://flask.pocoo.org/docs/dev/)
 ### PROJECT OVERVIEW
 
 Corruption is a huge bane to Africa’s development. African countries must develop novel and localised solutions that will curb this menace, hence the birth of iReporter.
-iReporter enables any/every citizen to bring any form of corruption to the notice of appropriate authorities and the general public. Users can also report on things that needs government intervention.
+iReporter enables any/every citizen to bring any form of corruption to the notice of appropriate authorities and the general public. Users can also report on things that needs government intervention.   
+ [GitHub Pages Link](https://antonnifo.github.io/iReporter/UI "gh pages")
+
 
 ## Installation and Deployment.
 
-### Clone the repo
+### Getting Started
  > git clone https://github.com/antonnifo/iReporter.git
 
-### Setup environment  
-create a database called ireporter or create one to your liking and change the url in app/db_con.py  
-sudo -u postgres psql.use your local user also. 
-> postgres=# create database ireporter;
+### Seting up databases  
+create two postgres databases and change the values of the database url's in your .env file   
+sudo -u postgres psql 
+> postgres=# create database ireporter;   
+> postgres=# create database test_ireporter;
 
 
 #### create a virtual environment and activate it
@@ -26,22 +29,31 @@ sudo -u postgres psql.use your local user also.
 
 #### Install all the dependencies using the command
 > pip install - r Requirements.txt  
-## `.env`  
-> source venv/bin/activate  
->export FLASK_APP = run.py  
-> FLASK_CONF = "development"  
->FLASK_DEBUG = 1  
->FLASK_ENV = "development"  
+## `contents of .env`   
+```  
+source venv/bin/activate  
 
+export FLASK_ENV="development"   
+export FLASK_CONFIG="development"  
+export DATABASE_URL="dbname='your-database' host='localhost' port='5432' user='your-username' password='your-password'"   
+export DATABASE_URL_TEST="dbname='your-test-database' host='localhost' port='5432' user='your-username' password='your-password'"   
+export SECRET_KEY="secret-key-goes-here"
+```
 
 #### How to Run the App
-> ```.env
-> flask run
+ ```   
+source .env
+> flask run   
+```
 
-#### Test the application
-> flask test  
-> or  
-> flask cov
+#### Test the application  
+Tests are to be run with pytest or py.test on the root of iReporter folder
+Set FLASK_CONFIG to testing on your .env file before running tests   
+```
+source .env
+pytest --cov=app/
+```
+
 
 
 
