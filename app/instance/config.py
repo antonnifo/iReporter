@@ -41,5 +41,5 @@ APP_CONFIG = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
     'production': ProductionConfig,
-    'default': TestingConfig
+    'default': TestingConfig,
 }
