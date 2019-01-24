@@ -7,8 +7,7 @@
 
 Corruption is a huge bane to Africa’s development. African countries must develop novel and localised solutions that will curb this menace, hence the birth of iReporter.
 iReporter enables any/every citizen to bring any form of corruption to the notice of appropriate authorities and the general public. Users can also report on things that needs government intervention.   
- [GitHub Pages Link](https://antonnifo.github.io/iReporter/UI "gh pages")
-
+ 
 
 ## Installation and Deployment.
 
@@ -28,7 +27,7 @@ sudo -u postgres psql
 > ```.env
 
 #### Install all the dependencies using the command
-> pip install - r Requirements.txt  
+> pip install - r requirements.txt  
 ## `contents of .env`   
 ```  
 source venv/bin/activate  
@@ -86,13 +85,3 @@ pytest --cov=app/
  #### Author  
  > Anthony Mwangi
  
-                    
-
-
-
-
-
-
-
-
-
