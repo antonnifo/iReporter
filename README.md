@@ -1,4 +1,4 @@
- ## IReporter   [![Build Status](https://travis-ci.org/antonnifo/iReporter.svg?branch=patch-comment-162297565)](https://travis-ci.org/antonnifo/iReporter) [![Coverage Status](https://coveralls.io/repos/github/antonnifo/iReporter/badge.svg?branch=develop)](https://coveralls.io/github/antonnifo/iReporter?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/f0f65e93e402e665e3c9/maintainability)](https://codeclimate.com/github/antonnifo/iReporter/maintainability)   
+ ## IReporter   [![Build Status](https://travis-ci.org/antonnifo/iReporter.svg?branch=patch-comment-162297565)](https://travis-ci.org/antonnifo/iReporter) [![Coverage Status](https://coveralls.io/repos/github/antonnifo/iReporter/badge.svg?branch=develop)](https://coveralls.io/github/antonnifo/iReporter?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/f0f65e93e402e665e3c9/maintainability)](https://codeclimate.com/github/antonnifo/iReporter/maintainability) [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)   
 
 
 ### Tech/framework used  
