@@ -22,12 +22,12 @@ sudo -u postgres psql
 
 
 #### create a virtual environment and activate it
-> python3 - m venv env  
+> python3 -m venv env  
 > source .env  
 > ```.env
 
 #### Install all the dependencies using the command
-> pip install - r requirements.txt  
+> pip install -r requirements.txt  
 ## `contents of .env`   
 ```  
 source venv/bin/activate  
